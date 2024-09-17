@@ -875,20 +875,6 @@ namespace CustomRPC
                     break;
                 case TimestampType.Custom:
                     DateTime customTimestamp = dateTimePickerTimestamp.Value.ToUniversalTime();
-                    /// I must apologize preemptively for this monster of an if-statement
-                    /// Timestamps before 2001-09-09 01:46:40 UTC only work if you have a "dumb" presence (the one that only has ID,
-                    /// timestamp and small image fields set)
-                    /// Technically, it doesn't even matter what date you put in the rich presence timestamp, since it only shows the hours
-                    /// since/to the timestamp
-                    if (customTimestamp.CompareTo(new DateTime(2001, 9, 9, 1, 46, 40, DateTimeKind.Utc)) < 0 &&
-                        !(string.IsNullOrEmpty(settings.details) && string.IsNullOrEmpty(settings.state) && settings.partySize == 0 &&
-                        settings.partyMax == 0 && string.IsNullOrEmpty(settings.largeKey) && string.IsNullOrEmpty(settings.largeText) &&
-                        string.IsNullOrEmpty(settings.smallText) && string.IsNullOrEmpty(settings.button1Text) &&
-                        string.IsNullOrEmpty(settings.button1URL) && string.IsNullOrEmpty(settings.button2Text) &&
-                        string.IsNullOrEmpty(settings.button2URL)))
-                    {
-                        customTimestamp = new DateTime(2002, 1, 1, customTimestamp.Hour, customTimestamp.Minute, customTimestamp.Second, DateTimeKind.Utc);
-                    }
                     rp.Timestamps = customTimestamp.CompareTo(DateTime.UtcNow) < 0 ? new Timestamps(customTimestamp) : new Timestamps(DateTime.UtcNow, customTimestamp);
                     break;
             }
